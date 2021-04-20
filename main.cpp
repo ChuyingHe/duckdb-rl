@@ -91,5 +91,4 @@ int main(){
     runJOBQuerys(con);
 
     con.Query("COMMIT");
-
 }
