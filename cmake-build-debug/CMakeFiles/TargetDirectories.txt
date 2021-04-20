@@ -1,0 +1,3 @@
+/Users/chuyinghe/CLionProjects/duckdb-rl/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/chuyinghe/CLionProjects/duckdb-rl/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/chuyinghe/CLionProjects/duckdb-rl/cmake-build-debug/CMakeFiles/duckdb_rl.dir
