@@ -97,6 +97,8 @@ imdb_constants.hpp
 /Users/chuyinghe/CLionProjects/duckdb-rl/imdb_constants.hpp
 timer.hpp
 /Users/chuyinghe/CLionProjects/duckdb-rl/timer.hpp
+unistd.h
+-
 iostream
 -
 fstream

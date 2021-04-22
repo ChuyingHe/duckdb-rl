@@ -4,6 +4,27 @@
 
 #ifndef DUCKDB_TEST_IMDB_CONSTANTS_HPP
 #define DUCKDB_TEST_IMDB_CONSTANTS_HPP
+#include <unistd.h>
+#include <string>
+#include <cstring>
+#include "duckdb.hpp"
+
+std::string getRootPath() {
+    const int MAXPATH=250;
+    char buffer[MAXPATH];
+    getcwd(buffer, MAXPATH);
+    int endPos;
+    for (int i = 0; i < duckdb::string_t(buffer).GetString().size(); i++) {
+        if (buffer[i] == '/')  {
+            endPos = i;
+        }
+    }
+    std::string rootPath = duckdb::string_t(buffer).GetString().substr(0,endPos);
+    // std::cout << rootPath <<std::endl;
+
+    return rootPath;
+}
+
 
 // count for Table
 
@@ -42,31 +63,59 @@ const char *IMDB_TABLE_CREATE_SQL[] = {
 };
 
 // Table copy from csv file
-const char *IMDB_TABLE_FROM_CSV_SQL[] = {
-        "COPY aka_name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/aka_name.csv' DELIMITER ';' ESCAPE '\';",
-        "COPY aka_title FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/aka_title.csv' ESCAPE '\';",
-        "COPY cast_info FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/cast_info.csv' ESCAPE '\';",
-        "COPY char_name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/char_name.csv' ESCAPE '\';",
-        "COPY comp_cast_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/comp_cast_type.csv' ESCAPE '\';",
-        "COPY company_name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/company_name.csv' ESCAPE '\';",
-        "COPY company_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/company_type.csv' ESCAPE '\';",
-        "COPY complete_cast FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/complete_cast.csv' ESCAPE '\';",
-        "COPY info_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/info_type.csv' ESCAPE '\';",
-        "COPY keyword FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/keyword.csv' ESCAPE '\';",
-        "COPY kind_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/kind_type.csv' ESCAPE '\';",
-        "COPY link_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/link_type.csv' ESCAPE '\';",
-        "COPY movie_companies FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_companies.csv' ESCAPE '\';",
-        "COPY movie_info_idx FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_info_idx.csv' ESCAPE '\';",
-        "COPY movie_keyword FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_keyword.csv' ESCAPE '\';",
-        "COPY movie_link FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_link.csv' ESCAPE '\';",
-        "COPY name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/name.csv' ESCAPE '\';",
-        "COPY role_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/role_type.csv' ESCAPE '\';",
-        "COPY title FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/title.csv' ESCAPE '\';",
-        "COPY movie_info FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_info.csv' ESCAPE '\';",
-        "COPY person_info FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/person_info.csv' ESCAPE '\';"
+const std::string IMDB_DIRECTORY = getRootPath() + "/imdb/";
+
+const std::string IMDB_TABLE_FROM_CSV_SQL[] = {
+        "COPY aka_name FROM '" + IMDB_DIRECTORY + "aka_name.csv' ESCAPE '\\';",
+        "COPY aka_title FROM '" + IMDB_DIRECTORY + "aka_title.csv' ESCAPE '\\';",
+        "COPY cast_info FROM '" + IMDB_DIRECTORY + "cast_info.csv' ESCAPE '\\';",
+        "COPY char_name FROM '" + IMDB_DIRECTORY + "char_name.csv' ESCAPE '\\';",
+        "COPY comp_cast_type FROM '" + IMDB_DIRECTORY + "comp_cast_type.csv' ESCAPE '\\';",
+        "COPY company_name FROM '" + IMDB_DIRECTORY + "company_name.csv' ESCAPE '\\';",
+        "COPY company_type FROM '" + IMDB_DIRECTORY + "company_type.csv' ESCAPE '\\';",
+        "COPY complete_cast FROM '" + IMDB_DIRECTORY + "complete_cast.csv' ESCAPE '\\';",
+        "COPY info_type FROM '" + IMDB_DIRECTORY + "info_type.csv' ESCAPE '\\';",
+        "COPY keyword FROM '" + IMDB_DIRECTORY + "keyword.csv' ESCAPE '\\';",
+        "COPY kind_type FROM '" + IMDB_DIRECTORY + "kind_type.csv' ESCAPE '\\';",
+        "COPY link_type FROM '" + IMDB_DIRECTORY + "link_type.csv' ESCAPE '\\';",
+        "COPY movie_companies FROM '" + IMDB_DIRECTORY + "movie_companies.csv' ESCAPE '\\';",
+        "COPY movie_info_idx FROM '" + IMDB_DIRECTORY + "movie_info_idx.csv' ESCAPE '\\';",
+        "COPY movie_keyword FROM '" + IMDB_DIRECTORY + "movie_keyword.csv' ESCAPE '\\';",
+        "COPY movie_link FROM '" + IMDB_DIRECTORY + "movie_link.csv' ESCAPE '\\';",
+        "COPY name FROM '" + IMDB_DIRECTORY + "name.csv' ESCAPE '\\';",
+        "COPY role_type FROM '" + IMDB_DIRECTORY + "role_type.csv' ESCAPE '\\';",
+        "COPY title FROM '" + IMDB_DIRECTORY + "title.csv' ESCAPE '\\';",
+        "COPY movie_info FROM '" + IMDB_DIRECTORY + "movie_info.csv' ESCAPE '\\';",
+        "COPY person_info FROM '" + IMDB_DIRECTORY + "person_info.csv' ESCAPE '\\';"
 };
 
+/* const char* IMDB_DIRECTORY = "/Users/chuyinghe/CLionProjects/duckdb-rl/cmake-build-release/duckdb_rl/imdb/";
+ * const char *IMDB_TABLE_FROM_CSV_SQL[] = {
+        "COPY aka_name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/aka_name.csv' ESCAPE '\\';",
+        "COPY aka_title FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/aka_title.csv' ESCAPE '\\';",
+        "COPY cast_info FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/cast_info.csv' ESCAPE '\\';",
+        "COPY char_name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/char_name.csv' ESCAPE '\\';",
+        "COPY comp_cast_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/comp_cast_type.csv' ESCAPE '\\';",
+        "COPY company_name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/company_name.csv' ESCAPE '\\';",
+        "COPY company_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/company_type.csv' ESCAPE '\\';",
+        "COPY complete_cast FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/complete_cast.csv' ESCAPE '\\';",
+        "COPY info_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/info_type.csv' ESCAPE '\\';",
+        "COPY keyword FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/keyword.csv' ESCAPE '\\';",
+        "COPY kind_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/kind_type.csv' ESCAPE '\\';",
+        "COPY link_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/link_type.csv' ESCAPE '\\';",
+        "COPY movie_companies FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_companies.csv' ESCAPE '\\';",
+        "COPY movie_info_idx FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_info_idx.csv' ESCAPE '\\';",
+        "COPY movie_keyword FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_keyword.csv' ESCAPE '\\';",
+        "COPY movie_link FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_link.csv' ESCAPE '\\';",
+        "COPY name FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/name.csv' ESCAPE '\\';",
+        "COPY role_type FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/role_type.csv' ESCAPE '\\';",
+        "COPY title FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/title.csv' ESCAPE '\\';",
+        "COPY movie_info FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/movie_info.csv' ESCAPE '\\';",
+        "COPY person_info FROM '/Users/chuyinghe/CLionProjects/duckdb-rl/imdb/person_info.csv' ESCAPE '\\';"
+};*/
+
 /*Test*/
+
 const char* TEST_QUERY[] = {
         "SELECT COUNT(*) FROM aka_name;",
         "SELECT COUNT(*) FROM aka_title;",
