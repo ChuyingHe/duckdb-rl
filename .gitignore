@@ -1,5 +1,5 @@
 imdb/
-.idea/
 cmake-build-debug/
 cmake-build-release/
 run-log/
+.idea/
