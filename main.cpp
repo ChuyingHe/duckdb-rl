@@ -1,6 +1,7 @@
 //
 // Created by Chuying He on 07.04.21.
 //
+
 #include "duckdb.hpp"
 #include "imdb_constants.hpp"
 #include "timer.hpp"
@@ -11,6 +12,8 @@
 #include <unistd.h>
 #include <string>
 #include <chrono>
+
+
 
 using namespace duckdb;
 
@@ -73,8 +76,13 @@ void runJOBQuerys(Connection con) {
     // std::string path = "/Users/chuyinghe/CLionProjects/duckdb-rl/job-query";
     std::string path = getRootPath() + "/job-query";
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
+        /*enable duckdb profiling*/
+        std::string str_pragma = "PRAGMA profile_output='/Users/chuyinghe/CLionProjects/duckdb-rl/query-graph/profiling/";
+        std::string str_profiling = str_pragma + entry.path().filename().string() + ".json';";
+        std::cout<<str_profiling<<std::endl;
+        con.Query("PRAGMA enable_profiling='json';" + str_profiling);
+
         timer timerCurrentQuery;
-        std::cout << "㊗️" << entry.path() << std::endl;
         auto result = con.Query(readFileIntoString(entry.path()));
         result->Print();
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -111,6 +119,9 @@ int main(){
 
     DuckDB db(nullptr);
     Connection con(db);
+
+
+
     loadTables(con);
     runJOBQuerys(con);
 
