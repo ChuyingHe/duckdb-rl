@@ -76,11 +76,16 @@ void runJOBQuerys(Connection con) {
     // std::string path = "/Users/chuyinghe/CLionProjects/duckdb-rl/job-query";
     std::string path = getRootPath() + "/job-query";
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
+        /*disable DuckDB optimizer*/
+        /*con.Query("PRAGMA disable_optimizer;");*/
+
         /*enable duckdb profiling*/
         std::string str_pragma = "PRAGMA profile_output='/Users/chuyinghe/CLionProjects/duckdb-rl/query-graph/profiling/";
         std::string str_profiling = str_pragma + entry.path().filename().string() + ".json';";
         std::cout<<str_profiling<<std::endl;
         con.Query("PRAGMA enable_profiling='json';" + str_profiling);
+
+
 
         timer timerCurrentQuery;
         auto result = con.Query(readFileIntoString(entry.path()));
@@ -120,15 +125,33 @@ int main(){
     DuckDB db(nullptr);
     Connection con(db);
 
-
-
     loadTables(con);
     runJOBQuerys(con);
 
-    /*loadTables(con);
-    runJOBQuerys(con);
+    /*test EXPLAIN*/
+    /*con.Query("PRAGMA explain_output='all';");  // show all instead of optimized-only plan
+    auto testExplain = con.Query("EXPLAIN SELECT MIN(mc.note) AS production_note,\n"
+              "       MIN(t.title) AS movie_title,\n"
+              "       MIN(t.production_year) AS movie_year\n"
+              "FROM company_type AS ct,\n"
+              "     info_type AS it,\n"
+              "     movie_companies AS mc,\n"
+              "     movie_info_idx AS mi_idx,\n"
+              "     title AS t\n"
+              "WHERE ct.kind = 'production companies'\n"
+              "  AND it.info = 'top 250 rank'\n"
+              "  AND mc.note NOT LIKE '%(as Metro-Goldwyn-Mayer Pictures)%'\n"
+              "  AND (mc.note LIKE '%(co-production)%'\n"
+              "       OR mc.note LIKE '%(presents)%')\n"
+              "  AND ct.id = mc.company_type_id\n"
+              "  AND t.id = mc.movie_id\n"
+              "  AND t.id = mi_idx.movie_id\n"
+              "  AND mc.movie_id = mi_idx.movie_id\n"
+              "  AND it.id = mi_idx.info_type_id;\n"
+              "");
+    testExplain->Print();*/
 
-    con.Query("COMMIT");*/
+    /*con.Query("COMMIT");*/
 
 }
 
