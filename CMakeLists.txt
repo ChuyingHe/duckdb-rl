@@ -9,4 +9,4 @@ MESSAGE(STATUS ${SRC_LIST})
 
 include_directories(${CMAKE_SOURCE_DIR}/dependencies/libduckdb-src) # duckdb - be able to use #include "duckdb.hpp"
 
-add_executable(duckdb_rl main.cpp dependencies/libduckdb-src/duckdb.cpp imdb_constants.hpp timer.cpp)
+add_executable(duckdb_rl main.cpp dependencies/libduckdb-src/duckdb.cpp imdb_constants.hpp)

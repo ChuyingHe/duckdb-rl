@@ -4,6 +4,7 @@
 
 #ifndef DUCKDB_TEST_IMDB_CONSTANTS_HPP
 #define DUCKDB_TEST_IMDB_CONSTANTS_HPP
+
 #include <unistd.h>
 #include <string>
 #include <cstring>
