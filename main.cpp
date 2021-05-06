@@ -40,10 +40,8 @@ void runJOBQuerys(Connection con) {
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
         std::cout<< "🀄️🀄️🀄️ JOBQuery:" << entry.path().filename().string()<<std::endl;
         /*start duckdb profiling*/
-        std::string str_profiling = "PRAGMA profile_output='" + getRootPath() +"/query-prapg/profiling/" + entry.path().filename().string() + ".json';";
-        /*std::string str_pragma = "PRAGMA profile_output='/Users/chuyinghe/CLionProjects/duckdb-rl/query-graph/profiling/";
-        std::string str_profiling = str_pragma + entry.path().filename().string() + ".json';";
-        std::cout<<str_profiling<<std::endl;*/
+        std::string str_profiling = "PRAGMA profile_output='" + getRootPath() +"/visualization/profiling/" + entry.path().filename().string() + ".json';";
+        std::cout <<"str_profiling = " << str_profiling<<"\n";
         con.Query(str_profiling);
 
         auto result = con.Query(readFileIntoString(entry.path()));
@@ -53,11 +51,12 @@ void runJOBQuerys(Connection con) {
 }
 
 int main(){
-    DuckDB db(nullptr);
+    std::string persistent_db = "imdb.db";
+    DuckDB db(persistent_db);
     Connection con(db);
 
     /*disable DuckDB optimizer*/
-    con.Query("PRAGMA disable_optimizer;");
+    /*con.Query("PRAGMA disable_optimizer;");*/
 
     /*config profiling*/
     con.Query("PRAGMA enable_profiling='json';");
