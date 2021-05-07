@@ -56,10 +56,10 @@ int main(){
     Connection con(db);
 
     /*disable DuckDB optimizer*/
-    /*con.Query("PRAGMA disable_optimizer;");*/
+    con.Query("PRAGMA disable_optimizer");
 
     /*config profiling*/
-    con.Query("PRAGMA enable_profiling='json';");
+    con.Query("PRAGMA enable_profiling='json'");
 
     loadTables(con);
     runJOBQuerys(con);
