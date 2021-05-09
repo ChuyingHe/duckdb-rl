@@ -40,10 +40,12 @@ void loadTables(Connection con) {
 void runJOBQuerys(Connection con) {
     std::cout <<"🀄️🀄️🀄️ runJOBQuerys \n";
 
-    /*disable DuckDB optimizer*/
+    /*disable DuckDB optimizer*//*
     con.Query("PRAGMA disable_optimizer;");
-    /*config profiling*/
-    con.Query("PRAGMA enable_profiling='json';");
+    *//*config profiling*//*
+    con.Query("PRAGMA enable_profiling='json';");*/
+    std::string pragma_optimizer = "PRAGMA disable_optimizer";
+    std::string pragma_profiling = "PRAGMA enable_profiling='json'";
 
     // std::string path = "/Users/chuyinghe/CLionProjects/duckdb-rl/job-query";
     std::string path = getRootPath() + "/job-query";
@@ -52,10 +54,13 @@ void runJOBQuerys(Connection con) {
         /*start duckdb profiling*/
         std::string str_profiling = "PRAGMA profile_output='" + getRootPath() +"/visualization/profiling/" + entry.path().filename().string() + ".json';";
         std::cout <<"str_profiling = " << str_profiling<<"\n";
+
+        con.Query(pragma_profiling);
+        con.Query(pragma_profiling);
         con.Query(str_profiling);
 
         auto sql_from_file = readFileIntoString(entry.path());
-        std::cout << "sql_from_file = " << sql_from_file <<"\n";
+        // std::cout << "sql_from_file = " << sql_from_file <<"\n";
         con.Query(sql_from_file);
         // auto result =
         // result->Print();
