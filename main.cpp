@@ -38,7 +38,7 @@ void loadTables(Connection con) {
 }
 
 void runJOBQuerys(Connection con) {
-    std::cout <<"runJOBQuerys \n";
+    std::cout <<"🀄️🀄️🀄️ runJOBQuerys \n";
 
     /*disable DuckDB optimizer*/
     con.Query("PRAGMA disable_optimizer;");
@@ -48,7 +48,7 @@ void runJOBQuerys(Connection con) {
     // std::string path = "/Users/chuyinghe/CLionProjects/duckdb-rl/job-query";
     std::string path = getRootPath() + "/job-query";
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
-        std::cout<< "🀄️🀄️🀄️ JOBQuery:" << entry.path().filename().string()<<std::endl;
+        std::cout<< "🀄️JOBQuery:" << entry.path().filename().string()<<std::endl;
         /*start duckdb profiling*/
         std::string str_profiling = "PRAGMA profile_output='" + getRootPath() +"/visualization/profiling/" + entry.path().filename().string() + ".json';";
         std::cout <<"str_profiling = " << str_profiling<<"\n";
