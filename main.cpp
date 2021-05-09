@@ -69,7 +69,8 @@ void runJOBQuerys(Connection con) {
 int main(){
     std::cout <<"main \n";
     std::string persistent_db = "imdb.db";
-    DuckDB db(persistent_db);
+
+    DuckDB db(nullptr);
     Connection con(db);
 
     loadTables(con);
