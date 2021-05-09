@@ -66,14 +66,27 @@ void runJOBQuerys(Connection con) {
     con.Query("PRAGMA enable_optimizer;");
 }
 
+bool existDB(std::string db) {
+    std::string db_dir = getBuildPath() + "/" + db ;
+    //std::cout << "test = " <<db_dir << "\n";
+    if (std::filesystem::exists(db_dir)) {
+        std::cout<< "the db already exists";
+        return true;
+    }
+    return false;
+}
+
 int main(){
     std::cout <<"main \n";
     std::string persistent_db = "imdb.db";
 
-    DuckDB db(nullptr);
+    DuckDB db(persistent_db);
     Connection con(db);
 
-    loadTables(con);
+    if (!existDB(persistent_db)) {
+        loadTables(con);
+    }
+
     runJOBQuerys(con);
 
     //test EXPLAIN

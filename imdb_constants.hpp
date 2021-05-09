@@ -10,17 +10,23 @@
 #include <cstring>
 #include "duckdb.hpp"
 
-std::string getRootPath() {
+std::string getBuildPath() {
     const int MAXPATH=250;
     char buffer[MAXPATH];
     getcwd(buffer, MAXPATH);
+    std::string build_path = duckdb::string_t(buffer).GetString();
+    return build_path;
+}
+
+std::string getRootPath() {
+    std::string build_path = getBuildPath();
     int endPos;
-    for (int i = 0; i < duckdb::string_t(buffer).GetString().size(); i++) {
-        if (buffer[i] == '/')  {
+    for (int i = 0; i < build_path.size(); i++) {
+        if (build_path[i] == '/')  {
             endPos = i;
         }
     }
-    std::string rootPath = duckdb::string_t(buffer).GetString().substr(0,endPos);
+    std::string rootPath = duckdb::string_t(build_path).GetString().substr(0,endPos);
     // std::cout << rootPath <<std::endl;
 
     return rootPath;
