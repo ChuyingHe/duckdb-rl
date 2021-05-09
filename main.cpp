@@ -37,6 +37,12 @@ void loadTables(Connection con) {
 
 void runJOBQuerys(Connection con) {
     std::cout <<"runJOBQuerys \n";
+
+    /*disable DuckDB optimizer*/
+    con.Query("PRAGMA disable_optimizer;");
+    /*config profiling*/
+    con.Query("PRAGMA enable_profiling='json';");
+
     // std::string path = "/Users/chuyinghe/CLionProjects/duckdb-rl/job-query";
     std::string path = getRootPath() + "/job-query";
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
@@ -46,9 +52,10 @@ void runJOBQuerys(Connection con) {
         std::cout <<"str_profiling = " << str_profiling<<"\n";
         con.Query(str_profiling);
 
-        std::cout << "Result = ";
-        auto result = con.Query(readFileIntoString(entry.path()));
-        result->Print();
+        auto sql_from_file = readFileIntoString(entry.path());
+        con.Query(sql_from_file);
+        // auto result =
+        // result->Print();
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }
@@ -58,15 +65,6 @@ int main(){
     std::string persistent_db = "imdb.db";
     DuckDB db(persistent_db);
     Connection con(db);
-
-    std::cout <<"after con \n";
-    /*disable DuckDB optimizer*/
-    /*con.Query("PRAGMA disable_optimizer;");*/
-
-    /*config profiling*/
-    con.Query("PRAGMA enable_profiling='json';");
-
-    std::cout <<"after profiling \n";
 
     loadTables(con);
     runJOBQuerys(con);
