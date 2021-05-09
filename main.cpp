@@ -25,12 +25,14 @@ string readFileIntoString(const string& path) {
 void loadTables(Connection con) {
     std::cout <<"loadTables \n";
     for (int t = 0; t < IMDB_TABLE_COUNT; t++) {
+        std::cout << IMDB_TABLE_NAMES[t] << ": ";
+
         con.Query(IMDB_TABLE_CREATE_SQL[t]);
         con.Query(IMDB_TABLE_FROM_CSV_SQL[t]);
+
         /*TODO: delet the following test code*/
         auto test = con.Query(TEST_QUERY[t]);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        std::cout << IMDB_TABLE_NAMES[t] << ": ";
+        // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         test->Print();
     }
 }
@@ -53,11 +55,15 @@ void runJOBQuerys(Connection con) {
         con.Query(str_profiling);
 
         auto sql_from_file = readFileIntoString(entry.path());
+        std::cout << "sql_from_file = " << sql_from_file <<"\n";
         con.Query(sql_from_file);
         // auto result =
         // result->Print();
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+
+    /*disable DuckDB optimizer*/
+    con.Query("PRAGMA enable_optimizer;");
 }
 
 int main(){
