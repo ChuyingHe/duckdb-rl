@@ -12,12 +12,12 @@ include_directories(${CMAKE_SOURCE_DIR}/dependencies/libduckdb-src) # duckdb - b
 add_executable(duckdb_rl main.cpp dependencies/libduckdb-src/duckdb.cpp imdb_constants.hpp)
 
 # find threads library
-find_package(Threads REQUIRED)
-target_link_libraries(duckdb_rl PRIVATE Threads::Threads)
 IF(APPLE)
     MESSAGE(STATUS "Now is Apple systens.")
 ELSEIF(UNIX)
     MESSAGE(STATUS "Now is UNIX systens.")
+    find_package(Threads REQUIRED)
+    target_link_libraries(duckdb_rl PRIVATE Threads::Threads)
 ELSEIF (WIN32)
     MESSAGE(STATUS "Now is windows")
 ELSE()
