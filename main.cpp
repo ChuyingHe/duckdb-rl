@@ -38,29 +38,16 @@ void loadTables(Connection con) {
 }
 
 void runJOBQuerys(Connection con) {
-    std::cout <<"🀄️🀄️🀄️ runJOBQuerys \n";
-    con.Query("PRAGMA disable_optimizer;\n");
+    std::string job_folder = getRootPath() + "/job-query";
+    for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
+        std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
+        con.Query(job_profiling);
+        // std::cout<<job_profiling;
 
-
-//    std::string pragma_optimizer = "PRAGMA disable_optimizer";
-    // std::string pragma_profiling = "PRAGMA enable_profiling='json'; \n";
-    // std::string path = "/Users/chuyinghe/CLionProjects/duckdb-rl/job-query";
-
-    std::string path = getRootPath() + "/job-query";
-    for (const auto & entry : std::filesystem::directory_iterator(path)) {
-        std::cout<< "🌺 JOBQuery:" << entry.path().filename().string()<<std::endl;
-
-        std::string job_profiling = "PRAGMA profile_output ='" + getRootPath() +"/visualization/profiling/" + entry.path().filename().string() + ".json';\n";
-        std::cout <<"\n job_query = " << job_profiling<<"\n";
-        con.Query("PRAGMA enable_profiling='json';" + job_profiling);
-
-  	//con.Query(job_profiling);
-        con.Query("SELECT * FROM info_type;");
-
-        auto job_query = readFileIntoString(entry.path());
-      	std::cout<<job_query<<std::endl;
-	/*con.Query(job_query);*/
+        // con.Query("SELECT * FROM info_type;");
+        con.Query(readFileIntoString(entry.path()));
     }
+
 }
 
 bool existDB(std::string db) {
@@ -86,6 +73,11 @@ int main(){
     }
 
     con.Query("PRAGMA enable_profiling='json';\n");
+    con.Query("PRAGMA disable_optimizer;\n");
+
+    /*con.Query("PRAGMA profile_output='/Users/chuyinghe/CLionProjects/duckdb-rl/visualization/profiling/test.sql.json';");
+    con.Query("SELECT * FROM info_type;");*/
+
     runJOBQuerys(con);
 
 

@@ -1,0 +1,18 @@
+{
+   "result": 0.000280,
+   "timings": {
+      "physical_planner": 0.000033,
+      "physical_planner > column_binding": 0.000008,
+      "physical_planner > create_plan": 0.000010,
+      "physical_planner > resolve_types": 0.000005,
+      "planner": 0.000111,
+      "planner > binder": 0.000102
+   },
+   "tree": {
+   "name": "SEQ_SCAN",
+   "timing":0.00,
+   "cardinality":113,
+   "extra_info": "info_type\n[INFOSEPARATOR]\nid\ninfo",
+   "children": []
+   }
+}
