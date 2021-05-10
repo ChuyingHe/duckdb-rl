@@ -52,12 +52,14 @@ void runJOBQuerys(Connection con) {
 
         std::string job_profiling = "PRAGMA profile_output ='" + getRootPath() +"/visualization/profiling/" + entry.path().filename().string() + ".json';\n";
         std::cout <<"\n job_query = " << job_profiling<<"\n";
+        con.Query("PRAGMA enable_profiling='json';" + job_profiling);
 
-  	    con.Query(job_profiling);
+  	//con.Query(job_profiling);
         con.Query("SELECT * FROM info_type;");
 
-        /*auto job_query = readFileIntoString(entry.path());
-        con.Query(job_query);*/
+        auto job_query = readFileIntoString(entry.path());
+      	std::cout<<job_query<<std::endl;
+	/*con.Query(job_query);*/
     }
 }
 
