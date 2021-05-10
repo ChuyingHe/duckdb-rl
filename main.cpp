@@ -40,7 +40,7 @@ void loadTables(Connection con) {
 void runJOBQuerys(Connection con) {
     std::cout <<"🀄️🀄️🀄️ runJOBQuerys \n";
     con.Query("PRAGMA disable_optimizer;\n");
-    con.Query("PRAGMA enable_profiling='json';\n");
+
 
 //    std::string pragma_optimizer = "PRAGMA disable_optimizer";
     // std::string pragma_profiling = "PRAGMA enable_profiling='json'; \n";
@@ -82,7 +82,10 @@ int main(){
     if (!existDB(persistent_db)) {
         loadTables(con);
     }
+
+    con.Query("PRAGMA enable_profiling='json';\n");
     runJOBQuerys(con);
+
 
     /*start duckdb profiling*/
     // con.Query("PRAGMA enable_profiling='json'");
