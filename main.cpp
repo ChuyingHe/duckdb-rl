@@ -91,17 +91,10 @@ int main(){
     con.Query("PRAGMA enable_profiling='json';\n");
     con.Query("PRAGMA disable_optimizer;\n");
 
-    /*con.Query("PRAGMA profile_output='/Users/chuyinghe/CLionProjects/duckdb-rl/visualization/profiling/test.sql.json';");
-    con.Query("SELECT * FROM info_type;");*/
-
     runJOBQuerys(con);
 
-
-    /*start duckdb profiling*/
-    // con.Query("PRAGMA enable_profiling='json'");
-    //disable DuckDB optimizer*/
-
-
+    /*con.Query("PRAGMA profile_output='/Users/chuyinghe/CLionProjects/duckdb-rl/visualization/profiling/test.sql.json';");
+    con.Query("SELECT * FROM info_type;");*/
 
     //test EXPLAIN
     /*con.Query("PRAGMA explain_output='all';");  // show all instead of optimized-only plan
