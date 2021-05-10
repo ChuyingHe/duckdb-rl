@@ -39,36 +39,26 @@ void loadTables(Connection con) {
 
 void runJOBQuerys(Connection con) {
     std::cout <<"🀄️🀄️🀄️ runJOBQuerys \n";
+    con.Query("PRAGMA disable_optimizer;\n");
+    con.Query("PRAGMA enable_profiling='json';\n");
 
-    /*disable DuckDB optimizer*//*
-    con.Query("PRAGMA disable_optimizer;");
-    *//*config profiling*/
-    con.Query("PRAGMA enable_profiling='json'; ");
 //    std::string pragma_optimizer = "PRAGMA disable_optimizer";
-    //std::string pragma_profiling = "PRAGMA enable_profiling='json'";
-
+    // std::string pragma_profiling = "PRAGMA enable_profiling='json'; \n";
     // std::string path = "/Users/chuyinghe/CLionProjects/duckdb-rl/job-query";
+
     std::string path = getRootPath() + "/job-query";
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
         std::cout<< "🌺 JOBQuery:" << entry.path().filename().string()<<std::endl;
-        /*start duckdb profiling*/
-        std::string str_profiling = "PRAGMA profile_output='" + getRootPath() +"/visualization/profiling/" + entry.path().filename().string() + ".json';";
-        std::cout <<"str_profiling = " << str_profiling<<"\n";
 
-//        con.Query(pragma_optimizer);
-//        con.Query(pragma_profiling);
-  	con.Query(str_profiling);
+        std::string job_profiling = "PRAGMA profile_output ='" + getRootPath() +"/visualization/profiling/" + entry.path().filename().string() + ".json';\n";
+        std::cout <<"\n job_query = " << job_profiling<<"\n";
 
-        auto sql_from_file = readFileIntoString(entry.path());
-        // std::cout << "sql_from_file = " << sql_from_file <<"\n";
-        con.Query(sql_from_file);
-        // auto result =
-        // result->Print();
-        // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  	    con.Query(job_profiling);
+        con.Query("SELECT * FROM info_type;");
+
+        /*auto job_query = readFileIntoString(entry.path());
+        con.Query(job_query);*/
     }
-
-    /*disable DuckDB optimizer*/
-    con.Query("PRAGMA enable_optimizer;");
 }
 
 bool existDB(std::string db) {
@@ -88,11 +78,17 @@ int main(){
     DuckDB db(persistent_db);
     Connection con(db);
 
+    std::cout <<"🌈checkpoint \n";
     if (!existDB(persistent_db)) {
         loadTables(con);
     }
-
     runJOBQuerys(con);
+
+    /*start duckdb profiling*/
+    // con.Query("PRAGMA enable_profiling='json'");
+    //disable DuckDB optimizer*/
+
+
 
     //test EXPLAIN
     /*con.Query("PRAGMA explain_output='all';");  // show all instead of optimized-only plan
