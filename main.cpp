@@ -40,12 +40,21 @@ void loadTables(Connection con) {
 void runJOBQuerys(Connection con) {
     std::string job_folder = getRootPath() + "/job-query";
     for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
-        std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
-        con.Query(job_profiling);
+        std::string job_file = entry.path().filename().string();
+        if (job_file.substr(job_file.find_last_of(".") + 1) == "sql") {
+            std::cout<<job_file<<"\n";
+            std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
+            con.Query(job_profiling);
+            con.Query("SELECT * FROM info_type;");
+        }
+        /*
+
         // std::cout<<job_profiling;
 
-        // con.Query("SELECT * FROM info_type;");
-        con.Query(readFileIntoString(entry.path()));
+
+        // std::string job_query = readFileIntoString(entry.path());
+        std::string job_query = "SELECT * FROM info_type;";
+        con.Query(job_query);*/
     }
 
 }
