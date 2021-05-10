@@ -42,10 +42,17 @@ void runJOBQuerys(Connection con) {
     for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
         std::string job_file = entry.path().filename().string();
         if (job_file.substr(job_file.find_last_of(".") + 1) == "sql") {
-            std::cout<<job_file<<"\n";
+            std::cout<< "🎰 "<< job_file<<"\n";
             std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
             con.Query(job_profiling);
-            con.Query("SELECT * FROM info_type;");
+
+            //std::string job_query = "SELECT * FROM info_type;";
+            std::string job_query = readFileIntoString(entry.path());
+            // std::cout <<  job_query << std::endl;
+            // con.Query(job_query);
+            // std::string test = "SELECT MIN(mc.note) AS production_note, MIN(t.title) AS movie_title, MIN(t.production_year) AS movie_year FROM company_type AS ct, info_type AS it, movie_companies AS mc, movie_info_idx AS mi_idx, title AS t WHERE ct.kind = 'production companies' AND it.info = 'top 250 rank' AND mc.note NOT LIKE '%(as Metro-Goldwyn-Mayer Pictures)%' AND (mc.note LIKE '%(co-production)%' OR mc.note LIKE '%(presents)%') AND ct.id = mc.company_type_id AND t.id = mc.movie_id AND t.id = mi_idx.movie_id AND mc.movie_id = mi_idx.movie_id AND it.id = mi_idx.info_type_id; ";
+            // std::string test2 = "SELECT MIN(mc.note) AS production_note FROM movie_companies AS mc;";
+            con.Query(job_query);
         }
         /*
 
