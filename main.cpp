@@ -23,9 +23,9 @@ string readFileIntoString(const string& path) {
 }
 
 void loadTables(Connection con) {
-    std::cout <<"loadTables \n";
+    std::cout <<"\n loadTables \n\n\n";
     for (int t = 0; t < IMDB_TABLE_COUNT; t++) {
-        std::cout << IMDB_TABLE_NAMES[t] << ": ";
+        std::cout <<"🐱"<< IMDB_TABLE_NAMES[t] << ": ";
 
         con.Query(IMDB_TABLE_CREATE_SQL[t]);
         con.Query(IMDB_TABLE_FROM_CSV_SQL[t]);
@@ -37,33 +37,28 @@ void loadTables(Connection con) {
     }
 }
 
-void runJOBQuerys(Connection con) {
+void runJOBQuerys(Connection con) { 
+    std::cout << "\n runJOBQuerys \n\n\n";
     std::string job_folder = getRootPath() + "/job-query";
     for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
         std::string job_file = entry.path().filename().string();
         if (job_file.substr(job_file.find_last_of(".") + 1) == "sql") {
-            std::cout<< "🎰 "<< job_file<<"\n";
+//            std::cout<< "\n 🎰 "<< job_file;
             std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
             con.Query(job_profiling);
-
-            //std::string job_query = "SELECT * FROM info_type;";
-            std::string job_query = readFileIntoString(entry.path());
-            // std::cout <<  job_query << std::endl;
-            // con.Query(job_query);
-            // std::string test = "SELECT MIN(mc.note) AS production_note, MIN(t.title) AS movie_title, MIN(t.production_year) AS movie_year FROM company_type AS ct, info_type AS it, movie_companies AS mc, movie_info_idx AS mi_idx, title AS t WHERE ct.kind = 'production companies' AND it.info = 'top 250 rank' AND mc.note NOT LIKE '%(as Metro-Goldwyn-Mayer Pictures)%' AND (mc.note LIKE '%(co-production)%' OR mc.note LIKE '%(presents)%') AND ct.id = mc.company_type_id AND t.id = mc.movie_id AND t.id = mi_idx.movie_id AND mc.movie_id = mi_idx.movie_id AND it.id = mi_idx.info_type_id; ";
-            std::string test2 = "SELECT MIN(mc.note) AS production_note FROM movie_companies AS mc;";
-            con.Query(test2);
+//	    std::cout<<"\n performed profiling pragma";
+//            std::string job_query = readFileIntoString(entry.path());
+//	    std::string job_query = "SELECT * FROM comp_cast_type;";
+//	    std::string job_query = "SELECT MIN(chn.name) AS uncredited_voiced_character FROM char_name AS chn;";
+	    if(job_file=="test.sql") {
+	    	std::string job_query = readFileIntoString(entry.path());
+	   	std::cout <<"\n [TEST]  current query = " <<job_query;
+           	std::cout <<"\n query result: ";
+            	auto result = con.Query(job_query);
+            	result->Print();
+	    }
         }
-        /*
-
-        // std::cout<<job_profiling;
-
-
-        // std::string job_query = readFileIntoString(entry.path());
-        std::string job_query = "SELECT * FROM info_type;";
-        con.Query(job_query);*/
     }
-
 }
 
 bool existDB(std::string db) {
@@ -84,12 +79,12 @@ int main(){
     Connection con(db);
 
     std::cout <<"🌈checkpoint \n";
-    if (!existDB(persistent_db)) {
-        loadTables(con);
-    }
-
+//    if (!existDB(persistent_db)) {
+//        loadTables(con);
+//    }
+    loadTables(con);
     con.Query("PRAGMA enable_profiling='json';");
-    /*con.Query("PRAGMA disable_optimizer;");*/
+    con.Query("PRAGMA disable_optimizer;");
 
     runJOBQuerys(con);
 
