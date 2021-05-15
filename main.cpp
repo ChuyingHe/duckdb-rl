@@ -85,6 +85,7 @@ int main(){
     loadTables(con);
     con.Query("PRAGMA enable_profiling='json';");
     con.Query("PRAGMA disable_optimizer;");
+    con.Query("PRAGMA enable_progress_bar;")
 
     runJOBQuerys(con);
 
