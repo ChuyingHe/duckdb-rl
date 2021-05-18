@@ -43,20 +43,18 @@ void runJOBQuerys(Connection con) {
     for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
         std::string job_file = entry.path().filename().string();
         if (job_file.substr(job_file.find_last_of(".") + 1) == "sql") {
-//            std::cout<< "\n 🎰 "<< job_file;
+            std::cout<< "\n 🎰 "<< job_file;
             std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
             con.Query(job_profiling);
 //	    std::cout<<"\n performed profiling pragma";
 //            std::string job_query = readFileIntoString(entry.path());
 //	    std::string job_query = "SELECT * FROM comp_cast_type;";
 //	    std::string job_query = "SELECT MIN(chn.name) AS uncredited_voiced_character FROM char_name AS chn;";
-	    if(job_file=="test.sql") {
-	    	std::string job_query = readFileIntoString(entry.path());
-	   	std::cout <<"\n [TEST]  current query = " <<job_query;
-           	std::cout <<"\n query result: ";
-            	auto result = con.Query(job_query);
-            	result->Print();
-	    }
+	    std::string job_query = readFileIntoString(entry.path());
+	    std::cout <<"job_query = " <<job_query;
+            std::cout <<"\n query result: ";
+            auto result = con.Query(job_query);
+            result->Print();
         }
     }
 }
@@ -84,8 +82,8 @@ int main(){
 //    }
     loadTables(con);
     con.Query("PRAGMA enable_profiling='json';");
-    con.Query("PRAGMA disable_optimizer;");
-    con.Query("PRAGMA enable_progress_bar;")
+//    con.Query("PRAGMA disable_optimizer;");
+    con.Query("PRAGMA enable_progress_bar;");
 
     runJOBQuerys(con);
 
