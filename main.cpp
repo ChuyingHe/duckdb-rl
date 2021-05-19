@@ -23,7 +23,7 @@ string readFileIntoString(const string& path) {
 }
 
 void loadTables(Connection con) {
-    std::cout <<"\n loadTables \n\n\n";
+    std::cout <<"\n loadTables \n";
     for (int t = 0; t < IMDB_TABLE_COUNT; t++) {
         std::cout <<"🐱"<< IMDB_TABLE_NAMES[t] << ": ";
 
@@ -35,6 +35,17 @@ void loadTables(Connection con) {
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         test->Print();
     }
+    return;
+}
+
+void addIndexes(Connection con) {
+    std::cout <<"\n addIndexes \n";
+    for (int i=0; i < IMDB_TABLE_INDEX.size(); i++) {
+        std::cout << i<<"/"<< IMDB_TABLE_INDEX.size() <<" " << IMDB_TABLE_INDEX[i] << "\n";
+        con.Query(IMDB_TABLE_INDEX[i]);
+
+    }
+    return;
 }
 
 void runJOBQuerys(Connection con) { 
@@ -43,6 +54,10 @@ void runJOBQuerys(Connection con) {
     for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
         std::string job_file = entry.path().filename().string();
         if (job_file.substr(job_file.find_last_of(".") + 1) == "sql") {
+            con.Query("PRAGMA disable_optimizer");
+            con.Query("PRAGMA enable_progress_bar");
+            con.Query("PRAGMA enable_profiling='json'");
+
             std::cout<< "\n 🎰 "<< job_file;
             std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
             con.Query(job_profiling);
@@ -50,13 +65,15 @@ void runJOBQuerys(Connection con) {
 //            std::string job_query = readFileIntoString(entry.path());
 //	    std::string job_query = "SELECT * FROM comp_cast_type;";
 //	    std::string job_query = "SELECT MIN(chn.name) AS uncredited_voiced_character FROM char_name AS chn;";
+
 	    std::string job_query = readFileIntoString(entry.path());
 	    std::cout <<"job_query = " <<job_query;
-            std::cout <<"\n query result: ";
-            auto result = con.Query(job_query);
-            result->Print();
+        std::cout <<"\n query result: ";
+        auto result = con.Query(job_query);
+        result->Print();
         }
     }
+    return;
 }
 
 bool existDB(std::string db) {
@@ -77,14 +94,11 @@ int main(){
     Connection con(db);
 
     std::cout <<"🌈checkpoint \n";
-//    if (!existDB(persistent_db)) {
-//        loadTables(con);
-//    }
-    loadTables(con);
-    con.Query("PRAGMA enable_profiling='json';");
-//    con.Query("PRAGMA disable_optimizer;");
-    con.Query("PRAGMA enable_progress_bar;");
+    if (!existDB(persistent_db)) {
+        loadTables(con);
+    }
 
+    addIndexes(con);
     runJOBQuerys(con);
 
     /*con.Query("PRAGMA profile_output='/Users/chuyinghe/CLionProjects/duckdb-rl/visualization/profiling/test.sql.json';");
