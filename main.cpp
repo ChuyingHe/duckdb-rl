@@ -32,7 +32,7 @@ void loadTables(Connection con) {
 
         /*TODO: delet the following test code*/
         auto test = con.Query(TEST_QUERY[t]);
-        // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         test->Print();
     }
     return;
