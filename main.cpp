@@ -23,7 +23,7 @@ string readFileIntoString(const string& path) {
 }
 
 void loadTables(Connection con) {
-    std::cout <<"\n loadTables \n";
+    std::cout <<"\n 🌈 loadTables \n";
     for (int t = 0; t < IMDB_TABLE_COUNT; t++) {
         std::cout <<"🐱"<< IMDB_TABLE_NAMES[t] << ": ";
 
@@ -39,17 +39,17 @@ void loadTables(Connection con) {
 }
 
 void addIndexes(Connection con) {
-    std::cout <<"\n addIndexes \n";
+    std::cout <<"\n 🌈 addIndexes \n";
     for (int i=0; i < IMDB_TABLE_INDEX.size(); i++) {
-        std::cout << i<<"/"<< IMDB_TABLE_INDEX.size() <<" " << IMDB_TABLE_INDEX[i] << "\n";
+        //std::cout << i<<"/"<< IMDB_TABLE_INDEX.size() <<" " << IMDB_TABLE_INDEX[i] << "\n";
         con.Query(IMDB_TABLE_INDEX[i]);
 
     }
     return;
 }
-
+/*
 void runJOBQuerys(Connection con) { 
-    std::cout << "\n runJOBQuerys \n\n\n";
+    std::cout << "\n 🌈 runJOBQuerys \n\n\n";
     std::string job_folder = getRootPath() + "/job-query";
     for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
         std::string job_file = entry.path().filename().string();
@@ -59,7 +59,7 @@ void runJOBQuerys(Connection con) {
             con.Query("PRAGMA enable_profiling='json'");
 
             std::cout<< "\n 🎰 "<< job_file;
-            std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json';\n";
+            std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+entry.path().filename().string()+".json'\n";
             con.Query(job_profiling);
 //	    std::cout<<"\n performed profiling pragma";
 //            std::string job_query = readFileIntoString(entry.path());
@@ -74,11 +74,39 @@ void runJOBQuerys(Connection con) {
         }
     }
     return;
+}*/
+
+void limitBatch(Connection con, std::string job_profiling, std::string job_query) {
+    con.Query("PRAGMA disable_optimizer");
+    con.Query("PRAGMA enable_progress_bar");
+    con.Query("PRAGMA enable_profiling='json'");
+    con.Query(job_profiling);
+    con.Query(job_query);
+    return;
 }
+
+void runJOBQuerys(Connection con) {
+    std::cout << "\n 🌈 runJOBQuerys \n\n\n";
+    std::string job_folder = getRootPath() + "/job-query";
+    for (const auto & entry:std::filesystem::directory_iterator(job_folder)) {
+        std::string job_name = entry.path().filename().string();
+        if (job_name.substr(job_name.find_last_of(".") + 1) == "sql") {
+
+            std::cout<< "\n 🎰 "<< job_name;
+            std::string job_profiling = "PRAGMA profile_output='"+getRootPath()+"/visualization/profiling/"+job_name+".json'\n";
+            std::string job_query = readFileIntoString(entry.path());
+
+            limitBatch(con, job_profiling, job_query);
+        }
+    }
+    return;
+}
+
+
 
 bool existDB(std::string db) {
     std::string db_dir = getBuildPath() + "/" + db ;
-    //std::cout << "test = " <<db_dir << "\n";
+    std::cout << "existDB = " <<db_dir << "\n";
     if (std::filesystem::exists(db_dir)) {
         std::cout<< "the db already exists";
         return true;
@@ -93,11 +121,10 @@ int main(){
     DuckDB db(persistent_db);
     Connection con(db);
 
-    std::cout <<"🌈checkpoint \n";
-    if (!existDB(persistent_db)) {
-        loadTables(con);
-    }
+    /*if (!existDB(persistent_db)) {
 
+    }*/
+    loadTables(con);
     addIndexes(con);
     runJOBQuerys(con);
 

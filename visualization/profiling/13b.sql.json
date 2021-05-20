@@ -1,26 +1,12 @@
 {
-   "result": 12.418507,
+   "result": 0.004912,
    "timings": {
-      "optimizer": 0.019001,
-      "optimizer > column_lifetime": 0.000134,
-      "optimizer > common_aggregate": 0.000071,
-      "optimizer > common_subexpressions": 0.000081,
-      "optimizer > deliminator": 0.000005,
-      "optimizer > expression_rewriter": 0.009258,
-      "optimizer > filter_pullup": 0.000015,
-      "optimizer > filter_pushdown": 0.007728,
-      "optimizer > in_clause": 0.000034,
-      "optimizer > regex_range": 0.000010,
-      "optimizer > reorder_filter": 0.000090,
-      "optimizer > statistics_propagation": 0.001235,
-      "optimizer > top_n": 0.000008,
-      "optimizer > unused_columns": 0.000190,
-      "physical_planner": 0.002439,
-      "physical_planner > column_binding": 0.000316,
-      "physical_planner > create_plan": 0.001667,
-      "physical_planner > resolve_types": 0.000322,
-      "planner": 0.013312,
-      "planner > binder": 0.013268
+      "physical_planner": 0.000477,
+      "physical_planner > column_binding": 0.000154,
+      "physical_planner > create_plan": 0.000116,
+      "physical_planner > resolve_types": 0.000146,
+      "planner": 0.001016,
+      "planner > binder": 0.001000
    },
    "tree": {
    "name": "SIMPLE_AGGREGATE",
@@ -31,69 +17,84 @@
    {
       "name": "PROJECTION",
       "timing":0.00,
-      "cardinality":372,
+      "cardinality":0,
       "extra_info": "name\ninfo\ntitle\n",
       "children": [
       {
-         "name": "HASH_JOIN",
-         "timing":0.25,
-         "cardinality":372,
-         "extra_info": "INNER\nid=kind_id\nmovie_id=id\nmovie_id=id\nmovie_id=id\nmovie_id=id\nmovie_id=id\nmovie_id=id\n",
+         "name": "FILTER",
+         "timing":0.00,
+         "cardinality":0,
+         "extra_info": "(country_code=[us] AND kind=production companies AND info=rating AND info=release dates AND kind=movie AND title!= AND (~~(title, %Champion%) OR ~~(title, %Loser%)) AND movie_id=id AND id=info_type_id AND id=kind_id AND movie_id=id AND id=company_id AND id=company_type_id AND movie_id=id AND id=info_type_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id)",
          "children": [
          {
-            "name": "HASH_JOIN",
-            "timing":1.97,
-            "cardinality":1051802,
-            "extra_info": "INNER\nid=info_type_id\nmovie_id=movie_id\nmovie_id=movie_id\n",
+            "name": "CROSS_PRODUCT",
+            "timing":0.00,
+            "cardinality":0,
+            "extra_info": "",
             "children": [
             {
-               "name": "HASH_JOIN",
-               "timing":3.70,
-               "cardinality":1355560,
-               "extra_info": "INNER\nid=info_type_id\nmovie_id=movie_id\n",
+               "name": "CROSS_PRODUCT",
+               "timing":0.00,
+               "cardinality":0,
+               "extra_info": "",
                "children": [
                {
-                  "name": "HASH_JOIN",
-                  "timing":3.07,
-                  "cardinality":552328,
-                  "extra_info": "INNER\nid=company_id\nid=company_type_id\n",
+                  "name": "CROSS_PRODUCT",
+                  "timing":0.00,
+                  "cardinality":0,
+                  "extra_info": "",
                   "children": [
                   {
                      "name": "CROSS_PRODUCT",
                      "timing":0.00,
-                     "cardinality":84843,
+                     "cardinality":0,
                      "extra_info": "",
                      "children": [
                      {
                         "name": "CROSS_PRODUCT",
                         "timing":0.00,
-                        "cardinality":84843,
+                        "cardinality":0,
                         "extra_info": "",
                         "children": [
                         {
                            "name": "CROSS_PRODUCT",
                            "timing":0.00,
-                           "cardinality":84843,
+                           "cardinality":0,
                            "extra_info": "",
                            "children": [
                            {
                               "name": "CROSS_PRODUCT",
                               "timing":0.00,
-                              "cardinality":84843,
+                              "cardinality":0,
                               "extra_info": "",
                               "children": [
                               {
-                                 "name": "SEQ_SCAN",
-                                 "timing":0.12,
-                                 "cardinality":84843,
-                                 "extra_info": "company_name\n[INFOSEPARATOR]\nname\ncountry_code\nid\n[INFOSEPARATOR]\nFilters: \ncountry_code=[us]",
-                                 "children": []
+                                 "name": "CROSS_PRODUCT",
+                                 "timing":0.00,
+                                 "cardinality":0,
+                                 "extra_info": "",
+                                 "children": [
+                                 {
+                                    "name": "SEQ_SCAN",
+                                    "timing":0.00,
+                                    "cardinality":0,
+                                    "extra_info": "company_name\n[INFOSEPARATOR]\nname\ncountry_code\nid",
+                                    "children": []
+                                    },
+                                 {
+                                    "name": "SEQ_SCAN",
+                                    "timing":0.00,
+                                    "cardinality":4,
+                                    "extra_info": "company_type\n[INFOSEPARATOR]\nkind\nid",
+                                    "children": []
+                                    }
+                                 ]
                                  },
                               {
                                  "name": "SEQ_SCAN",
-                                 "timing":0.01,
-                                 "cardinality":1,
-                                 "extra_info": "company_type\n[INFOSEPARATOR]\nkind\nid\n[INFOSEPARATOR]\nFilters: \nkind=production companies",
+                                 "timing":0.00,
+                                 "cardinality":113,
+                                 "extra_info": "info_type\n[INFOSEPARATOR]\ninfo\nid",
                                  "children": []
                                  }
                               ]
@@ -101,8 +102,8 @@
                            {
                               "name": "SEQ_SCAN",
                               "timing":0.00,
-                              "cardinality":1,
-                              "extra_info": "info_type\n[INFOSEPARATOR]\ninfo\nid\n[INFOSEPARATOR]\nFilters: \ninfo=rating",
+                              "cardinality":113,
+                              "extra_info": "info_type\n[INFOSEPARATOR]\ninfo\nid",
                               "children": []
                               }
                            ]
@@ -110,8 +111,8 @@
                         {
                            "name": "SEQ_SCAN",
                            "timing":0.00,
-                           "cardinality":1,
-                           "extra_info": "info_type\n[INFOSEPARATOR]\ninfo\nid\n[INFOSEPARATOR]\nFilters: \ninfo=release dates",
+                           "cardinality":7,
+                           "extra_info": "kind_type\n[INFOSEPARATOR]\nkind\nid",
                            "children": []
                            }
                         ]
@@ -119,49 +120,34 @@
                      {
                         "name": "SEQ_SCAN",
                         "timing":0.00,
-                        "cardinality":1,
-                        "extra_info": "kind_type\n[INFOSEPARATOR]\nkind\nid\n[INFOSEPARATOR]\nFilters: \nkind=movie",
+                        "cardinality":103,
+                        "extra_info": "movie_companies\n[INFOSEPARATOR]\nmovie_id\ncompany_id\ncompany_type_id",
                         "children": []
                         }
                      ]
                      },
                   {
                      "name": "SEQ_SCAN",
-                     "timing":0.12,
-                     "cardinality":2609129,
-                     "extra_info": "movie_companies\n[INFOSEPARATOR]\nmovie_id\ncompany_id\ncompany_type_id",
+                     "timing":0.00,
+                     "cardinality":0,
+                     "extra_info": "movie_info\n[INFOSEPARATOR]\nmovie_id\ninfo_type_id",
                      "children": []
                      }
                   ]
                   },
                {
                   "name": "SEQ_SCAN",
-                  "timing":0.62,
-                  "cardinality":14835720,
-                  "extra_info": "movie_info\n[INFOSEPARATOR]\nmovie_id\ninfo_type_id",
+                  "timing":0.00,
+                  "cardinality":105,
+                  "extra_info": "movie_info_idx\n[INFOSEPARATOR]\ninfo\nmovie_id\ninfo_type_id",
                   "children": []
                   }
                ]
                },
             {
                "name": "SEQ_SCAN",
-               "timing":0.16,
-               "cardinality":1380035,
-               "extra_info": "movie_info_idx\n[INFOSEPARATOR]\ninfo\nmovie_id\ninfo_type_id",
-               "children": []
-               }
-            ]
-            },
-         {
-            "name": "FILTER",
-            "timing":0.48,
-            "cardinality":2218,
-            "extra_info": "(title!= AND (contains(title, Champion) OR contains(title, Loser)))",
-            "children": [
-            {
-               "name": "SEQ_SCAN",
-               "timing":0.55,
-               "cardinality":2528312,
+               "timing":0.00,
+               "cardinality":98,
                "extra_info": "title\n[INFOSEPARATOR]\ntitle\nid\nkind_id",
                "children": []
                }
