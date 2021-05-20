@@ -1,27 +1,12 @@
 {
-   "result": 0.059647,
+   "result": 0.004093,
    "timings": {
-      "optimizer": 0.055561,
-      "optimizer > column_lifetime": 0.000127,
-      "optimizer > common_aggregate": 0.000036,
-      "optimizer > common_subexpressions": 0.000024,
-      "optimizer > deliminator": 0.000004,
-      "optimizer > expression_rewriter": 0.000662,
-      "optimizer > filter_pullup": 0.000010,
-      "optimizer > filter_pushdown": 0.004230,
-      "optimizer > in_clause": 0.000406,
-      "optimizer > join_order": 0.049331,
-      "optimizer > regex_range": 0.000008,
-      "optimizer > reorder_filter": 0.000030,
-      "optimizer > statistics_propagation": 0.000477,
-      "optimizer > top_n": 0.000004,
-      "optimizer > unused_columns": 0.000134,
-      "physical_planner": 0.000382,
-      "physical_planner > column_binding": 0.000098,
-      "physical_planner > create_plan": 0.000144,
-      "physical_planner > resolve_types": 0.000091,
-      "planner": 0.001792,
-      "planner > binder": 0.001771
+      "physical_planner": 0.000398,
+      "physical_planner > column_binding": 0.000123,
+      "physical_planner > create_plan": 0.000111,
+      "physical_planner > resolve_types": 0.000125,
+      "planner": 0.000712,
+      "planner > binder": 0.000704
    },
    "tree": {
    "name": "SIMPLE_AGGREGATE",
@@ -36,35 +21,170 @@
       "extra_info": "info\ninfo\nname\ntitle\n",
       "children": [
       {
-         "name": "HASH_JOIN",
+         "name": "FILTER",
          "timing":0.00,
          "cardinality":0,
-         "extra_info": "INNER\nmovie_id=movie_id\nmovie_id=id\nmovie_id=movie_id\nmovie_id=movie_id\nmovie_id=movie_id\n",
+         "extra_info": "(kind=cast AND kind=complete+verified AND IN(note, (writer), (head writer), (written by), (story), (story editor)) AND info=genres AND info=votes AND IN(keyword, murder, violence, blood, gore, death, female-nudity, hospital) AND IN(info, Horror, Action, Sci-Fi, Thriller, Crime, War) AND gender=m AND id=movie_id AND id=movie_id AND id=movie_id AND id=movie_id AND id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND movie_id=movie_id AND id=person_id AND id=info_type_id AND id=info_type_id AND id=keyword_id AND id=subject_id AND id=status_id)",
          "children": [
          {
-            "name": "HASH_JOIN",
+            "name": "CROSS_PRODUCT",
             "timing":0.00,
             "cardinality":0,
-            "extra_info": "INNER\nstatus_id=id\n",
+            "extra_info": "",
             "children": [
             {
-               "name": "HASH_JOIN",
+               "name": "CROSS_PRODUCT",
                "timing":0.00,
                "cardinality":0,
-               "extra_info": "INNER\nsubject_id=id\n",
+               "extra_info": "",
                "children": [
                {
-                  "name": "SEQ_SCAN",
+                  "name": "CROSS_PRODUCT",
                   "timing":0.00,
                   "cardinality":0,
-                  "extra_info": "complete_cast\n[INFOSEPARATOR]\nmovie_id\nsubject_id\nstatus_id",
-                  "children": []
+                  "extra_info": "",
+                  "children": [
+                  {
+                     "name": "CROSS_PRODUCT",
+                     "timing":0.00,
+                     "cardinality":0,
+                     "extra_info": "",
+                     "children": [
+                     {
+                        "name": "CROSS_PRODUCT",
+                        "timing":0.00,
+                        "cardinality":0,
+                        "extra_info": "",
+                        "children": [
+                        {
+                           "name": "CROSS_PRODUCT",
+                           "timing":0.00,
+                           "cardinality":0,
+                           "extra_info": "",
+                           "children": [
+                           {
+                              "name": "CROSS_PRODUCT",
+                              "timing":0.00,
+                              "cardinality":0,
+                              "extra_info": "",
+                              "children": [
+                              {
+                                 "name": "CROSS_PRODUCT",
+                                 "timing":0.00,
+                                 "cardinality":0,
+                                 "extra_info": "",
+                                 "children": [
+                                 {
+                                    "name": "CROSS_PRODUCT",
+                                    "timing":0.00,
+                                    "cardinality":0,
+                                    "extra_info": "",
+                                    "children": [
+                                    {
+                                       "name": "CROSS_PRODUCT",
+                                       "timing":0.00,
+                                       "cardinality":0,
+                                       "extra_info": "",
+                                       "children": [
+                                       {
+                                          "name": "CROSS_PRODUCT",
+                                          "timing":0.00,
+                                          "cardinality":0,
+                                          "extra_info": "",
+                                          "children": [
+                                          {
+                                             "name": "SEQ_SCAN",
+                                             "timing":0.00,
+                                             "cardinality":0,
+                                             "extra_info": "complete_cast\n[INFOSEPARATOR]\nmovie_id\nsubject_id\nstatus_id",
+                                             "children": []
+                                             },
+                                          {
+                                             "name": "SEQ_SCAN",
+                                             "timing":0.00,
+                                             "cardinality":4,
+                                             "extra_info": "comp_cast_type\n[INFOSEPARATOR]\nkind\nid",
+                                             "children": []
+                                             }
+                                          ]
+                                          },
+                                       {
+                                          "name": "SEQ_SCAN",
+                                          "timing":0.00,
+                                          "cardinality":4,
+                                          "extra_info": "comp_cast_type\n[INFOSEPARATOR]\nkind\nid",
+                                          "children": []
+                                          }
+                                       ]
+                                       },
+                                    {
+                                       "name": "SEQ_SCAN",
+                                       "timing":0.00,
+                                       "cardinality":109,
+                                       "extra_info": "cast_info\n[INFOSEPARATOR]\nnote\nmovie_id\nperson_id",
+                                       "children": []
+                                       }
+                                    ]
+                                    },
+                                 {
+                                    "name": "SEQ_SCAN",
+                                    "timing":0.00,
+                                    "cardinality":113,
+                                    "extra_info": "info_type\n[INFOSEPARATOR]\ninfo\nid",
+                                    "children": []
+                                    }
+                                 ]
+                                 },
+                              {
+                                 "name": "SEQ_SCAN",
+                                 "timing":0.00,
+                                 "cardinality":113,
+                                 "extra_info": "info_type\n[INFOSEPARATOR]\ninfo\nid",
+                                 "children": []
+                                 }
+                              ]
+                              },
+                           {
+                              "name": "SEQ_SCAN",
+                              "timing":0.00,
+                              "cardinality":120,
+                              "extra_info": "keyword\n[INFOSEPARATOR]\nkeyword\nid",
+                              "children": []
+                              }
+                           ]
+                           },
+                        {
+                           "name": "SEQ_SCAN",
+                           "timing":0.00,
+                           "cardinality":0,
+                           "extra_info": "movie_info\n[INFOSEPARATOR]\ninfo\nmovie_id\ninfo_type_id",
+                           "children": []
+                           }
+                        ]
+                        },
+                     {
+                        "name": "SEQ_SCAN",
+                        "timing":0.00,
+                        "cardinality":105,
+                        "extra_info": "movie_info_idx\n[INFOSEPARATOR]\ninfo\nmovie_id\ninfo_type_id",
+                        "children": []
+                        }
+                     ]
+                     },
+                  {
+                     "name": "SEQ_SCAN",
+                     "timing":0.00,
+                     "cardinality":103,
+                     "extra_info": "movie_keyword\n[INFOSEPARATOR]\nmovie_id\nkeyword_id",
+                     "children": []
+                     }
+                  ]
                   },
                {
                   "name": "SEQ_SCAN",
                   "timing":0.00,
-                  "cardinality":1,
-                  "extra_info": "comp_cast_type\n[INFOSEPARATOR]\nkind\nid\n[INFOSEPARATOR]\nFilters: \nkind=cast",
+                  "cardinality":99,
+                  "extra_info": "name\n[INFOSEPARATOR]\nname\ngender\nid",
                   "children": []
                   }
                ]
@@ -72,77 +192,9 @@
             {
                "name": "SEQ_SCAN",
                "timing":0.00,
-               "cardinality":1,
-               "extra_info": "comp_cast_type\n[INFOSEPARATOR]\nkind\nid\n[INFOSEPARATOR]\nFilters: \nkind=complete+verified",
+               "cardinality":98,
+               "extra_info": "title\n[INFOSEPARATOR]\ntitle\nid",
                "children": []
-               }
-            ]
-            },
-         {
-            "name": "HASH_JOIN",
-            "timing":0.00,
-            "cardinality":0,
-            "extra_info": "INNER\nid=keyword_id\n",
-            "children": [
-            {
-               "name": "PROJECTION",
-               "timing":0.00,
-               "cardinality":0,
-               "extra_info": "#1\n",
-               "children": [
-               {
-                  "name": "FILTER",
-                  "timing":0.00,
-                  "cardinality":0,
-                  "extra_info": "IN (...)",
-                  "children": [
-                  {
-                     "name": "HASH_JOIN",
-                     "timing":0.00,
-                     "cardinality":0,
-                     "extra_info": "MARK\nkeyword=#0\n",
-                     "children": [
-                     {
-                        "name": "SEQ_SCAN",
-                        "timing":0.00,
-                        "cardinality":0,
-                        "extra_info": "keyword\n[INFOSEPARATOR]\nkeyword\nid\n[INFOSEPARATOR]\nFilters: \nkeyword>=blood\nkeyword<=violence",
-                        "children": []
-                        },
-                     {
-                        "name": "CHUNK_SCAN",
-                        "timing":0.00,
-                        "cardinality":7,
-                        "extra_info": "",
-                        "children": []
-                        }
-                     ]
-                     }
-                  ]
-                  }
-               ]
-               },
-            {
-               "name": "HASH_JOIN",
-               "timing":0.00,
-               "cardinality":0,
-               "extra_info": "INNER\nid=info_type_id\n",
-               "children": [
-               {
-                  "name": "SEQ_SCAN",
-                  "timing":0.00,
-                  "cardinality":0,
-                  "extra_info": "info_type\n[INFOSEPARATOR]\ninfo\nid\n[INFOSEPARATOR]\nFilters: \ninfo=votes",
-                  "children": []
-                  },
-               {
-                  "name": "EMPTY_RESULT",
-                  "timing":0.00,
-                  "cardinality":0,
-                  "extra_info": "",
-                  "children": []
-                  }
-               ]
                }
             ]
             }
