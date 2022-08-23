@@ -1,0 +1,4 @@
+- Figure 8: Relationship between table number and loop number
+- Figure 9: Relationship between join number and loop number
+- Figure 10: Query processing performance: DuckDB vs SkinnerDB
+

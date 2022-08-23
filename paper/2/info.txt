@@ -1,0 +1,1 @@
+- Figure 6: Comparison of query processing performance with different hyperparameter settings
